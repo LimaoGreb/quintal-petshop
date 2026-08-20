@@ -8,7 +8,6 @@ import { Reveal } from "@/components/ui/reveal";
 import { testimonials as defaultTestimonials } from "@/lib/business";
 import type { SiteSettings } from "@/lib/sanity-data";
 import { gridStagger, fadeUp, transitionStandard } from "@/lib/motion";
-import { cn } from "@/lib/utils";
 
 export function Testimonials({
   testimonials = defaultTestimonials,
@@ -54,17 +53,14 @@ export function Testimonials({
           whileInView="visible"
           viewport={{ once: true, margin: "-10% 0px -10% 0px" }}
           variants={gridStagger}
-          className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3"
+          className="mt-12 grid gap-5 lg:grid-cols-3"
         >
-          {testimonials.map((t, i) => (
+          {testimonials.map((t) => (
             <motion.figure
               key={t.name}
               variants={fadeUp}
               transition={transitionStandard}
-              className={cn(
-                "flex flex-col justify-between rounded-[var(--radius-lg)] border border-ink/[0.07] bg-card p-8 md:p-10",
-                i === 1 && "lg:-translate-y-3"
-              )}
+              className="flex flex-col justify-between rounded-[var(--radius-lg)] border border-ink/[0.07] bg-card p-8 md:p-10"
             >
               <Quote className="h-8 w-8 text-terracotta/40" strokeWidth={1.5} />
               <blockquote className="mt-5 font-display text-[1.35rem] leading-snug text-ink">

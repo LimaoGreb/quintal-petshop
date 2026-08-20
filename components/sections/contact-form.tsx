@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Send } from "lucide-react";
 import { business, services as defaultServices } from "@/lib/business";
 import { cn } from "@/lib/utils";
+import { Select } from "@/components/ui/select";
 
 const inputClass =
   "w-full rounded-[var(--radius-md)] border border-ink/12 bg-cream px-4 py-3 text-[0.95rem] text-ink placeholder:text-ink-faint transition-colors duration-200 focus:border-forest focus:outline-none";
@@ -106,20 +107,14 @@ export function ContactForm({
         <label htmlFor="servico" className="mb-1.5 block text-[0.85rem] font-medium text-ink-soft">
           Serviço de interesse
         </label>
-        <select
+        <Select
           id="servico"
           name="servico"
           value={values.servico}
-          onChange={(e) => update("servico", e.target.value)}
-          className={cn(inputClass, "appearance-none")}
-        >
-          <option value="">Selecione um serviço</option>
-          {services.map((s) => (
-            <option key={s.id} value={s.name}>
-              {s.name}
-            </option>
-          ))}
-        </select>
+          onValueChange={(value) => update("servico", value)}
+          placeholder="Selecione um serviço"
+          options={services.map((s) => ({ value: s.name, label: s.name }))}
+        />
       </div>
 
       <div className="sm:col-span-2">
