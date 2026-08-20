@@ -1,13 +1,14 @@
 "use client";
 
-import { Droplets, HeartPulse, Scissors, ShoppingBag, Sun } from "lucide-react";
+import { Droplets, HeartPulse, Scissors, ShoppingBag, Sparkles, Sun } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { SectionLabel } from "@/components/ui/section-label";
 import { RealPhoto } from "@/components/ui/real-photo";
+import { PhotoPlaceholder } from "@/components/ui/photo-placeholder";
 import { Reveal } from "@/components/ui/reveal";
 import { gridStagger, fadeUp, transitionStandard } from "@/lib/motion";
-import { services } from "@/lib/business";
+import { services as defaultServices } from "@/lib/business";
 import { motion } from "motion/react";
 
 const icons: Record<string, LucideIcon> = {
@@ -18,6 +19,7 @@ const icons: Record<string, LucideIcon> = {
   "racoes-acessorios": ShoppingBag,
   "bem-estar": HeartPulse,
 };
+const fallbackIcon: LucideIcon = Sparkles;
 
 const photos: Record<string, { src: string; alt: string }> = {
   "banho-secagem": {
@@ -33,6 +35,8 @@ const photos: Record<string, { src: string; alt: string }> = {
 /**
  * Posicionamento do bento em telas grandes (grid 4 colunas x 3 linhas).
  * Mobile/tablet ignoram isso e empilham em ordem natural (1 coluna).
+ * Pensado para os 6 serviços originais — um serviço novo criado pelo
+ * cliente no painel entra sem posição fixa (o grid o encaixa sozinho).
  */
 const bentoPosition: Record<string, string> = {
   "banho-secagem": "lg:col-start-1 lg:row-start-1 lg:col-span-2 lg:row-span-2",
@@ -43,9 +47,7 @@ const bentoPosition: Record<string, string> = {
   "bem-estar": "lg:col-start-3 lg:row-start-3 lg:col-span-2 lg:row-span-1",
 };
 
-export function Services() {
-  const featured = new Set(["banho-secagem", "tosa-completa"]);
-
+export function Services({ services = defaultServices }: { services?: typeof defaultServices }) {
   return (
     <section id="servicos" className="scroll-mt-24 bg-cream py-24 md:py-32">
       <Container>
@@ -74,8 +76,9 @@ export function Services() {
           className="mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 lg:auto-rows-[minmax(160px,auto)]"
         >
           {services.map((service) => {
-            const Icon = icons[service.id];
-            const isFeatured = featured.has(service.id);
+            const Icon = icons[service.id] ?? fallbackIcon;
+            const isFeatured = service.featured;
+            const photo = photos[service.id];
 
             return (
               <motion.article
@@ -87,18 +90,28 @@ export function Services() {
                     ? "group relative flex min-h-[280px] flex-col justify-end overflow-hidden rounded-[var(--radius-lg)] p-7 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1"
                     : "group relative flex flex-col justify-between rounded-[var(--radius-lg)] border border-ink/[0.07] bg-card p-7 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1 hover:border-forest/25 hover:shadow-[0_16px_40px_-20px_rgba(27,31,34,0.18)]") +
                   " " +
-                  bentoPosition[service.id]
+                  (bentoPosition[service.id] ?? "")
                 }
               >
                 {isFeatured ? (
                   <>
-                    <RealPhoto
-                      src={photos[service.id].src}
-                      alt={photos[service.id].alt}
-                      rounded="rounded-[var(--radius-lg)]"
-                      className="absolute inset-0 h-full w-full transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03]"
-                      sizes="(min-width: 1024px) 50vw, 100vw"
-                    />
+                    {photo ? (
+                      <RealPhoto
+                        src={photo.src}
+                        alt={photo.alt}
+                        rounded="rounded-[var(--radius-lg)]"
+                        className="absolute inset-0 h-full w-full transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03]"
+                        sizes="(min-width: 1024px) 50vw, 100vw"
+                      />
+                    ) : (
+                      <PhotoPlaceholder
+                        label={`Foto real — ${service.name}`}
+                        tone="green"
+                        rounded="rounded-[var(--radius-lg)]"
+                        className="absolute inset-0 h-full w-full"
+                        showIcon={false}
+                      />
+                    )}
                     <div className="absolute inset-0 bg-gradient-to-t from-ink/75 via-ink/10 to-transparent" />
                     <div className="relative">
                       <Icon className="h-6 w-6 text-cream/80" strokeWidth={1.5} />

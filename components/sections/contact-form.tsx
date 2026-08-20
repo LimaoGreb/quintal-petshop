@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Send } from "lucide-react";
-import { business, services } from "@/lib/business";
+import { business, services as defaultServices } from "@/lib/business";
 import { cn } from "@/lib/utils";
 
 const inputClass =
@@ -13,7 +13,13 @@ const inputClass =
  * e monta uma mensagem de WhatsApp pré-formatada — a interface permanece
  * totalmente funcional sem depender de um servidor.
  */
-export function ContactForm() {
+export function ContactForm({
+  whatsappNumber = business.whatsappNumber,
+  services = defaultServices,
+}: {
+  whatsappNumber?: string;
+  services?: typeof defaultServices;
+}) {
   const [values, setValues] = useState({
     nome: "",
     telefone: "",
@@ -39,7 +45,7 @@ export function ContactForm() {
       values.mensagem ? `Mensagem: ${values.mensagem}` : undefined,
     ].filter(Boolean);
 
-    const url = `https://wa.me/${business.whatsappNumber}?text=${encodeURIComponent(
+    const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
       lines.join("\n")
     )}`;
     window.open(url, "_blank", "noopener,noreferrer");

@@ -9,10 +9,11 @@ import { navLinks } from "./nav-links";
 import { Button } from "@/components/ui/button";
 import { WhatsAppIcon } from "@/components/ui/whatsapp-icon";
 import { buildWhatsAppLink, defaultWhatsAppMessage } from "@/lib/business";
+import type { SiteSettings } from "@/lib/sanity-data";
 import { cn } from "@/lib/utils";
 import { transitionFast } from "@/lib/motion";
 
-export function Header() {
+export function Header({ settings }: { settings: SiteSettings }) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -80,7 +81,7 @@ export function Header() {
 
         <div className="flex items-center gap-3">
           <Button
-            href={buildWhatsAppLink(defaultWhatsAppMessage)}
+            href={buildWhatsAppLink(defaultWhatsAppMessage, settings.whatsappNumber)}
             target="_blank"
             rel="noopener noreferrer"
             variant="primary"
@@ -157,7 +158,7 @@ export function Header() {
                 className="mt-8"
               >
                 <Button
-                  href={buildWhatsAppLink(defaultWhatsAppMessage)}
+                  href={buildWhatsAppLink(defaultWhatsAppMessage, settings.whatsappNumber)}
                   target="_blank"
                   rel="noopener noreferrer"
                   variant="primary"

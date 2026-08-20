@@ -7,8 +7,15 @@ import { WhatsAppIcon } from "@/components/ui/whatsapp-icon";
 import { InstagramIcon } from "@/components/ui/instagram-icon";
 import { ContactForm } from "./contact-form";
 import { business, buildWhatsAppLink, defaultWhatsAppMessage } from "@/lib/business";
+import type { SiteSettings, ServiceItem } from "@/lib/sanity-data";
 
-export function Contact() {
+export function Contact({
+  settings,
+  services,
+}: {
+  settings: SiteSettings;
+  services?: ServiceItem[];
+}) {
   return (
     <section id="contato" className="scroll-mt-24 bg-cream-medium py-24 md:py-32">
       <Container>
@@ -32,9 +39,9 @@ export function Contact() {
                     <MapPin className="h-4 w-4" />
                   </span>
                   <div>
-                    <p className="font-medium text-ink">{business.addressLine}</p>
+                    <p className="font-medium text-ink">{settings.addressLine}</p>
                     <p className="text-[0.92rem] text-ink-soft">
-                      {business.neighborhood}, {business.city} - {business.state}
+                      {settings.neighborhood}, {settings.city} - {settings.state}
                     </p>
                   </div>
                 </li>
@@ -44,7 +51,7 @@ export function Contact() {
                   </span>
                   <div>
                     <p className="font-medium text-ink">Horário de funcionamento</p>
-                    <p className="text-[0.92rem] text-ink-soft">{business.hoursDisplay}</p>
+                    <p className="text-[0.92rem] text-ink-soft">{settings.hoursDisplay}</p>
                   </div>
                 </li>
                 <li className="flex items-start gap-3.5">
@@ -54,12 +61,12 @@ export function Contact() {
                   <div>
                     <p className="font-medium text-ink">WhatsApp</p>
                     <a
-                      href={buildWhatsAppLink(defaultWhatsAppMessage)}
+                      href={buildWhatsAppLink(defaultWhatsAppMessage, settings.whatsappNumber)}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-[0.92rem] text-ink-soft transition-colors hover:text-forest"
                     >
-                      {business.phoneDisplay}
+                      {settings.phoneDisplay}
                     </a>
                   </div>
                 </li>
@@ -70,12 +77,12 @@ export function Contact() {
                   <div>
                     <p className="font-medium text-ink">Instagram</p>
                     <a
-                      href={business.instagramUrl}
+                      href={settings.instagramUrl}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-[0.92rem] text-ink-soft transition-colors hover:text-forest"
                     >
-                      {business.instagramHandle}
+                      {settings.instagramHandle}
                     </a>
                   </div>
                 </li>
@@ -84,7 +91,7 @@ export function Contact() {
 
             <Reveal delay={0.08} className="flex flex-wrap gap-3">
               <Button
-                href={business.googleMapsUrl}
+                href={settings.googleMapsUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 variant="secondary"
@@ -94,7 +101,7 @@ export function Contact() {
                 Abrir no Google Maps
               </Button>
               <Button
-                href={buildWhatsAppLink(defaultWhatsAppMessage)}
+                href={buildWhatsAppLink(defaultWhatsAppMessage, settings.whatsappNumber)}
                 target="_blank"
                 rel="noopener noreferrer"
                 variant="primary"
@@ -125,7 +132,7 @@ export function Contact() {
                 Preencha e enviamos direto para o nosso WhatsApp — respondemos rápido.
               </p>
               <div className="mt-6">
-                <ContactForm />
+                <ContactForm whatsappNumber={settings.whatsappNumber} services={services} />
               </div>
             </div>
           </Reveal>

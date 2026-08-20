@@ -3,8 +3,18 @@
 import { useOpenStatus } from "@/hooks/useOpenStatus";
 import { cn } from "@/lib/utils";
 
-export function OpenStatus({ className }: { className?: string }) {
-  const { isOpen, ready } = useOpenStatus();
+export function OpenStatus({
+  className,
+  openDays,
+  openHour,
+  closeHour,
+}: {
+  className?: string;
+  openDays: readonly number[];
+  openHour: number;
+  closeHour: number;
+}) {
+  const { isOpen, ready } = useOpenStatus({ openDays, openHour, closeHour });
 
   return (
     <span

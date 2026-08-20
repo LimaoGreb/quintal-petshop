@@ -6,7 +6,9 @@ import { Footer } from "@/components/layout/footer";
 import { WhatsAppFloat } from "@/components/layout/whatsapp-float";
 import { BackToTop } from "@/components/layout/back-to-top";
 import { business } from "@/lib/business";
-import "./globals.css";
+import { getSiteSettings } from "@/lib/sanity-data";
+import { SanityLive } from "@/sanity/lib/live";
+import "../globals.css";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -60,38 +62,50 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "PetStore",
-  name: business.name,
-  image: `${siteUrl}/images/hero/facade.jpg`,
-  url: siteUrl,
-  telephone: "+5551993393445",
-  priceRange: "R$45–R$120",
-  address: {
-    "@type": "PostalAddress",
-    streetAddress: `${business.addressLine} - ${business.neighborhood}`,
-    addressLocality: business.city,
-    addressRegion: business.state,
-    addressCountry: "BR",
-  },
-  openingHoursSpecification: [
-    {
-      "@type": "OpeningHoursSpecification",
-      dayOfWeek: ["Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-      opens: "09:00",
-      closes: "19:00",
-    },
-  ],
-  sameAs: [business.instagramUrl],
-  aggregateRating: {
-    "@type": "AggregateRating",
-    ratingValue: business.rating,
-    reviewCount: business.reviewCount,
-  },
+const weekdayName: Record<number, string> = {
+  0: "Sunday",
+  1: "Monday",
+  2: "Tuesday",
+  3: "Wednesday",
+  4: "Thursday",
+  5: "Friday",
+  6: "Saturday",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const settings = await getSiteSettings();
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "PetStore",
+    name: business.name,
+    // TODO: adicionar "image" com uma foto real do estabelecimento quando disponível.
+    url: siteUrl,
+    telephone: `+${settings.whatsappNumber}`,
+    priceRange: "R$45–R$120",
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: `${settings.addressLine} - ${settings.neighborhood}`,
+      addressLocality: settings.city,
+      addressRegion: settings.state,
+      addressCountry: "BR",
+    },
+    openingHoursSpecification: [
+      {
+        "@type": "OpeningHoursSpecification",
+        dayOfWeek: settings.openDays.map((d) => weekdayName[d]),
+        opens: `${String(settings.openHour).padStart(2, "0")}:00`,
+        closes: `${String(settings.closeHour).padStart(2, "0")}:00`,
+      },
+    ],
+    sameAs: [settings.instagramUrl],
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: settings.rating,
+      reviewCount: settings.reviewCount,
+    },
+  };
+
   return (
     <html lang="pt-BR" className={`${playfair.variable} ${spaceGrotesk.variable}`}>
       <body>
@@ -106,12 +120,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           >
             Pular para o conteúdo
           </a>
-          <Header />
+          <Header settings={settings} />
           <main id="main-content">{children}</main>
-          <Footer />
-          <WhatsAppFloat />
+          <Footer settings={settings} />
+          <WhatsAppFloat whatsappNumber={settings.whatsappNumber} />
           <BackToTop />
         </Providers>
+        <SanityLive />
       </body>
     </html>
   );

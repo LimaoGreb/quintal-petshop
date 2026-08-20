@@ -3,9 +3,10 @@ import { Container } from "@/components/ui/container";
 import { WhatsAppIcon } from "@/components/ui/whatsapp-icon";
 import { InstagramIcon } from "@/components/ui/instagram-icon";
 import { navLinks } from "./nav-links";
-import { business, buildWhatsAppLink, defaultWhatsAppMessage } from "@/lib/business";
+import { buildWhatsAppLink, defaultWhatsAppMessage } from "@/lib/business";
+import type { SiteSettings } from "@/lib/sanity-data";
 
-export function Footer() {
+export function Footer({ settings }: { settings: SiteSettings }) {
   const year = new Date().getFullYear();
 
   return (
@@ -44,32 +45,32 @@ export function Footer() {
           <ul className="mt-4 space-y-3 text-[0.95rem] text-cream/70">
             <li className="flex items-start gap-2.5">
               <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-terracotta" />
-              <span>{business.addressFull}</span>
+              <span>{settings.addressFull}</span>
             </li>
             <li className="flex items-start gap-2.5">
               <Clock className="mt-0.5 h-4 w-4 shrink-0 text-terracotta" />
-              <span>{business.hoursDisplay}</span>
+              <span>{settings.hoursDisplay}</span>
             </li>
             <li className="flex items-start gap-2.5">
               <WhatsAppIcon className="mt-0.5 h-4 w-4 shrink-0 text-terracotta" />
               <a
-                href={buildWhatsAppLink(defaultWhatsAppMessage)}
+                href={buildWhatsAppLink(defaultWhatsAppMessage, settings.whatsappNumber)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="transition-colors hover:text-cream"
               >
-                {business.phoneDisplay}
+                {settings.phoneDisplay}
               </a>
             </li>
             <li className="flex items-start gap-2.5">
               <InstagramIcon className="mt-0.5 h-4 w-4 shrink-0 text-terracotta" />
               <a
-                href={business.instagramUrl}
+                href={settings.instagramUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="transition-colors hover:text-cream"
               >
-                {business.instagramHandle}
+                {settings.instagramHandle}
               </a>
             </li>
           </ul>

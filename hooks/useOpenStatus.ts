@@ -9,7 +9,13 @@ interface OpenStatus {
   ready: boolean;
 }
 
-function computeIsOpen(): boolean {
+interface OpeningHours {
+  openDays: readonly number[];
+  openHour: number;
+  closeHour: number;
+}
+
+function computeIsOpen(hours: OpeningHours): boolean {
   const now = new Date();
 
   // Extrai dia da semana e hora no fuso America/Sao_Paulo, independente do fuso do dispositivo.
@@ -36,18 +42,19 @@ function computeIsOpen(): boolean {
   };
   const dayIndex = weekdayMap[weekday];
 
-  const isOpenDay = (business.openDays as readonly number[]).includes(dayIndex);
-  const isOpenHour = hour >= business.openHour && hour < business.closeHour;
+  const isOpenDay = hours.openDays.includes(dayIndex);
+  const isOpenHour = hour >= hours.openHour && hour < hours.closeHour;
 
   return isOpenDay && isOpenHour;
 }
 
 /**
- * Calcula "aberto agora" em tempo real, no fuso America/Sao_Paulo.
+ * Calcula "aberto agora" em tempo real, no fuso America/Sao_Paulo, a partir
+ * do horário configurado (vem do painel de conteúdo — ver lib/sanity-data).
  * Roda apenas no cliente para evitar depender do relógio/fuso do servidor
  * e reavalia a cada minuto.
  */
-export function useOpenStatus(): OpenStatus {
+export function useOpenStatus(hours: OpeningHours): OpenStatus {
   const [state, setState] = useState<OpenStatus>({ isOpen: false, ready: false });
 
   useEffect(() => {
@@ -55,12 +62,13 @@ export function useOpenStatus(): OpenStatus {
     // servidor sem arriscar mismatch de hidratação, então é sincronizado
     // aqui e recalculado a cada minuto.
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    setState({ isOpen: computeIsOpen(), ready: true });
+    setState({ isOpen: computeIsOpen(hours), ready: true });
     const interval = setInterval(() => {
-      setState({ isOpen: computeIsOpen(), ready: true });
+      setState({ isOpen: computeIsOpen(hours), ready: true });
     }, 60_000);
     return () => clearInterval(interval);
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hours.openDays.join(","), hours.openHour, hours.closeHour]);
 
   return state;
 }

@@ -3,11 +3,15 @@
 import { motion } from "motion/react";
 import { HandHeart, Leaf, ShieldCheck } from "lucide-react";
 import { gridStagger, fadeUp } from "@/lib/motion";
-import { differentials } from "@/lib/business";
+import { differentials as defaultDifferentials } from "@/lib/business";
 
 const icons = [ShieldCheck, Leaf, HandHeart];
 
-export function DifferentialsGrid() {
+export function DifferentialsGrid({
+  items = defaultDifferentials,
+}: {
+  items?: typeof defaultDifferentials;
+}) {
   return (
     <motion.div
       initial="hidden"
@@ -16,8 +20,10 @@ export function DifferentialsGrid() {
       variants={gridStagger}
       className="mt-14 grid gap-5 md:grid-cols-3"
     >
-      {differentials.map((item, i) => {
-        const Icon = icons[i];
+      {items.map((item, i) => {
+        // Índices além dos 3 ícones originais repetem em ciclo — cobre o
+        // caso de o cliente adicionar um 4º diferencial pelo painel.
+        const Icon = icons[i % icons.length];
         return (
           <motion.div
             key={item.title}

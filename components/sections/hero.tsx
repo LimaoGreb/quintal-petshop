@@ -6,7 +6,8 @@ import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 import { RealPhoto } from "@/components/ui/real-photo";
 import { WhatsAppIcon } from "@/components/ui/whatsapp-icon";
-import { business, buildWhatsAppLink, defaultWhatsAppMessage } from "@/lib/business";
+import { buildWhatsAppLink, defaultWhatsAppMessage } from "@/lib/business";
+import type { SiteSettings } from "@/lib/sanity-data";
 import { transitionEditorial, transitionStandard } from "@/lib/motion";
 
 const line = {
@@ -14,7 +15,7 @@ const line = {
   visible: { opacity: 1, y: 0, filter: "blur(0px)" },
 };
 
-export function Hero() {
+export function Hero({ settings }: { settings: SiteSettings }) {
   return (
     <section className="relative isolate overflow-hidden bg-cream texture-paper pb-14 pt-28 md:pt-32 lg:flex lg:min-h-[92vh] lg:items-center lg:pb-0 lg:pt-24">
       {/* Fotografia principal — bleed até a borda direita da viewport em telas grandes */}
@@ -53,8 +54,8 @@ export function Hero() {
           </div>
           <div className="h-8 w-px bg-ink/10" />
           <p className="text-sm text-ink-soft">
-            <span className="font-semibold text-ink">{business.rating.toFixed(1)}</span> ·{" "}
-            {business.reviewCount} avaliações
+            <span className="font-semibold text-ink">{settings.rating.toFixed(1)}</span> ·{" "}
+            {settings.reviewCount} avaliações
           </p>
         </motion.div>
       </div>
@@ -80,7 +81,7 @@ export function Hero() {
               variants={{ visible: { transition: { delayChildren: 0.15 } } }}
             >
               <motion.span className="block" variants={line} transition={{ ...transitionStandard, delay: 0.15 }}>
-                Cuidado que eles sentem.
+                {settings.heroHeadlineLine1}
               </motion.span>
             </motion.span>
             <motion.span className="block overflow-hidden">
@@ -91,7 +92,7 @@ export function Hero() {
                 animate="visible"
                 transition={{ ...transitionStandard, delay: 0.28 }}
               >
-                Confiança que você percebe.
+                {settings.heroHeadlineLine2}
               </motion.span>
             </motion.span>
           </h1>
@@ -102,8 +103,7 @@ export function Hero() {
             transition={{ ...transitionStandard, delay: 0.4 }}
             className="mt-6 max-w-md text-[1.05rem] leading-relaxed text-ink-soft"
           >
-            Banho, tosa e um dia inteiro de daycare — sempre no ritmo do seu pet, a poucos
-            passos de casa, no Rio Branco.
+            {settings.heroSubtitle}
           </motion.p>
 
           <motion.div
@@ -113,7 +113,7 @@ export function Hero() {
             className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center"
           >
             <Button
-              href={buildWhatsAppLink(defaultWhatsAppMessage)}
+              href={buildWhatsAppLink(defaultWhatsAppMessage, settings.whatsappNumber)}
               target="_blank"
               rel="noopener noreferrer"
               variant="primary"
@@ -135,11 +135,11 @@ export function Hero() {
           >
             <span className="inline-flex items-center gap-1.5">
               <Clock className="h-4 w-4 text-terracotta" />
-              {business.hoursShort}
+              {settings.hoursShort}
             </span>
             <span className="inline-flex items-center gap-1.5">
               <MapPin className="h-4 w-4 text-terracotta" />
-              {business.neighborhood}, {business.city}
+              {settings.neighborhood}, {settings.city}
             </span>
           </motion.div>
         </div>

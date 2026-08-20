@@ -5,7 +5,7 @@ import { motion } from "motion/react";
 import { WhatsAppIcon } from "@/components/ui/whatsapp-icon";
 import { buildWhatsAppLink, defaultWhatsAppMessage } from "@/lib/business";
 
-export function WhatsAppFloat() {
+export function WhatsAppFloat({ whatsappNumber }: { whatsappNumber: string }) {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -15,7 +15,7 @@ export function WhatsAppFloat() {
 
   return (
     <motion.a
-      href={buildWhatsAppLink(defaultWhatsAppMessage)}
+      href={buildWhatsAppLink(defaultWhatsAppMessage, whatsappNumber)}
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Chamar o Quintal Pet Shop no WhatsApp"

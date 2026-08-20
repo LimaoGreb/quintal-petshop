@@ -5,11 +5,18 @@ import { Quote, Star } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { SectionLabel } from "@/components/ui/section-label";
 import { Reveal } from "@/components/ui/reveal";
-import { testimonials } from "@/lib/business";
+import { testimonials as defaultTestimonials } from "@/lib/business";
+import type { SiteSettings } from "@/lib/sanity-data";
 import { gridStagger, fadeUp, transitionStandard } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
-export function Testimonials() {
+export function Testimonials({
+  testimonials = defaultTestimonials,
+  settings,
+}: {
+  testimonials?: typeof defaultTestimonials;
+  settings: SiteSettings;
+}) {
   return (
     <section id="avaliacoes" className="scroll-mt-24 bg-cream py-24 md:py-32">
       <Container>
@@ -32,7 +39,9 @@ export function Testimonials() {
                   <Star key={i} className="h-3.5 w-3.5 fill-current" />
                 ))}
               </div>
-              <span className="text-[0.85rem] text-ink-soft">5.0 · 75 avaliações no Google</span>
+              <span className="text-[0.85rem] text-ink-soft">
+                {settings.rating.toFixed(1)} · {settings.reviewCount} avaliações no Google
+              </span>
             </div>
           </Reveal>
         </div>

@@ -2,8 +2,13 @@ import { Container } from "@/components/ui/container";
 import { SectionLabel } from "@/components/ui/section-label";
 import { Reveal } from "@/components/ui/reveal";
 import { DifferentialsGrid } from "./differentials-grid";
+import type { getDifferentials } from "@/lib/sanity-data";
 
-export function Differentials() {
+export function Differentials({
+  items,
+}: {
+  items?: Awaited<ReturnType<typeof getDifferentials>>;
+}) {
   return (
     <section
       id="diferenciais"
@@ -37,7 +42,7 @@ export function Differentials() {
           </Reveal>
         </div>
 
-        <DifferentialsGrid />
+        <DifferentialsGrid items={items} />
       </Container>
     </section>
   );
