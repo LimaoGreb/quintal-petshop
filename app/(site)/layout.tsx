@@ -10,6 +10,9 @@ import { getSiteSettings } from "@/lib/sanity-data";
 import { SanityLive } from "@/sanity/lib/live";
 import { VisualEditing } from "next-sanity/visual-editing";
 import { draftMode } from "next/headers";
+import { isAdminSession } from "@/lib/admin-session";
+import { AdminModeProvider } from "@/components/admin/admin-provider";
+import { AdminBar } from "@/components/admin/admin-bar";
 import "../globals.css";
 
 const playfair = Playfair_Display({
@@ -77,6 +80,7 @@ const weekdayName: Record<number, string> = {
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const settings = await getSiteSettings();
   const { isEnabled: isDraftMode } = await draftMode();
+  const isAdmin = await isAdminSession();
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -116,19 +120,22 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        <Providers>
-          <a
-            href="#main-content"
-            className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-forest focus:px-5 focus:py-2.5 focus:text-cream"
-          >
-            Pular para o conteúdo
-          </a>
-          <Header settings={settings} />
-          <main id="main-content">{children}</main>
-          <Footer settings={settings} />
-          <WhatsAppFloat whatsappNumber={settings.whatsappNumber} />
-          <BackToTop />
-        </Providers>
+        <AdminModeProvider isAdmin={isAdmin}>
+          <Providers>
+            <a
+              href="#main-content"
+              className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-forest focus:px-5 focus:py-2.5 focus:text-cream"
+            >
+              Pular para o conteúdo
+            </a>
+            <Header settings={settings} />
+            <main id="main-content">{children}</main>
+            <Footer settings={settings} />
+            <WhatsAppFloat whatsappNumber={settings.whatsappNumber} />
+            <BackToTop />
+            {isAdmin && <AdminBar />}
+          </Providers>
+        </AdminModeProvider>
         <SanityLive />
         {isDraftMode && <VisualEditing />}
       </body>

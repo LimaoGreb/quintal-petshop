@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/ui/reveal";
 import { WhatsAppIcon } from "@/components/ui/whatsapp-icon";
 import { InstagramIcon } from "@/components/ui/instagram-icon";
+import { EditableText } from "@/components/admin/editable-text";
 import { ContactForm } from "./contact-form";
 import { business, buildWhatsAppLink, defaultWhatsAppMessage } from "@/lib/business";
 import type { SiteSettings, ServiceItem } from "@/lib/sanity-data";
@@ -39,7 +40,9 @@ export function Contact({
                     <MapPin className="h-4 w-4" />
                   </span>
                   <div>
-                    <p className="font-medium text-ink">{settings.addressLine}</p>
+                    <p className="font-medium text-ink">
+                      <EditableText docId={settings.docId} field="addressLine" value={settings.addressLine} />
+                    </p>
                     <p className="text-[0.92rem] text-ink-soft">
                       {settings.neighborhood}, {settings.city} - {settings.state}
                     </p>
@@ -51,7 +54,9 @@ export function Contact({
                   </span>
                   <div>
                     <p className="font-medium text-ink">Horário de funcionamento</p>
-                    <p className="text-[0.92rem] text-ink-soft">{settings.hoursDisplay}</p>
+                    <p className="text-[0.92rem] text-ink-soft">
+                      <EditableText docId={settings.docId} field="hoursDisplay" value={settings.hoursDisplay} />
+                    </p>
                   </div>
                 </li>
                 <li className="flex items-start gap-3.5">
@@ -66,7 +71,7 @@ export function Contact({
                       rel="noopener noreferrer"
                       className="text-[0.92rem] text-ink-soft transition-colors hover:text-forest"
                     >
-                      {settings.phoneDisplay}
+                      <EditableText docId={settings.docId} field="phoneDisplay" value={settings.phoneDisplay} />
                     </a>
                   </div>
                 </li>
@@ -82,7 +87,7 @@ export function Contact({
                       rel="noopener noreferrer"
                       className="text-[0.92rem] text-ink-soft transition-colors hover:text-forest"
                     >
-                      {settings.instagramHandle}
+                      <EditableText docId={settings.docId} field="instagramHandle" value={settings.instagramHandle} />
                     </a>
                   </div>
                 </li>

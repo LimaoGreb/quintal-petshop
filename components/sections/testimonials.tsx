@@ -5,6 +5,7 @@ import { Quote, Star } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { SectionLabel } from "@/components/ui/section-label";
 import { Reveal } from "@/components/ui/reveal";
+import { EditableText } from "@/components/admin/editable-text";
 import { testimonials as defaultTestimonials } from "@/lib/business";
 import type { SiteSettings } from "@/lib/sanity-data";
 import { gridStagger, fadeUp, transitionStandard } from "@/lib/motion";
@@ -64,10 +65,12 @@ export function Testimonials({
             >
               <Quote className="h-8 w-8 text-terracotta/40" strokeWidth={1.5} />
               <blockquote className="mt-5 font-display text-[1.35rem] leading-snug text-ink">
-                “{t.quote}”
+                “<EditableText docId={t.docId} field="quote" value={t.quote} multiline />”
               </blockquote>
               <figcaption className="mt-6 flex items-center justify-between">
-                <span className="text-[0.95rem] font-medium text-ink-soft">{t.name}</span>
+                <span className="text-[0.95rem] font-medium text-ink-soft">
+                  <EditableText docId={t.docId} field="name" value={t.name} />
+                </span>
                 <span className="flex items-center gap-0.5 text-terracotta">
                   {Array.from({ length: 5 }).map((_, s) => (
                     <Star key={s} className="h-3.5 w-3.5 fill-current" />

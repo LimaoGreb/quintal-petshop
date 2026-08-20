@@ -59,12 +59,14 @@ interface ServiceDoc {
 }
 
 interface DifferentialDoc {
+  _id: string;
   title: string;
   description: string;
   order?: number;
 }
 
 interface TestimonialDoc {
+  _id: string;
   name: string;
   quote: string;
   order?: number;
@@ -107,6 +109,8 @@ export async function getSiteSettings() {
 
   return {
     ...merged,
+    // Singleton — o documento no Sanity sempre tem esse _id fixo (ver sanity/structure.ts).
+    docId: "siteSettings",
     openDays: (doc?.openDays?.map((d) => dayIndexByCode[d]).filter((n) => n !== undefined) ??
       defaultBusiness.openDays) as readonly number[],
     addressFull: `${merged.addressLine} — ${merged.neighborhood}, ${merged.city} - ${merged.state}`,
@@ -124,6 +128,7 @@ export async function getServices() {
     // usado para escolher o ícone e a foto certa de cada card. Um serviço
     // novo criado pelo cliente ganha um id genérico e cai no visual padrão.
     id: d._id.replace(/^service-/, ""),
+    docId: d._id,
     name: d.name,
     price: d.price,
     description: d.description,
@@ -137,7 +142,7 @@ export async function getDifferentials() {
   });
   const docs = data as DifferentialDoc[] | null;
   if (!docs || docs.length === 0) return defaultDifferentials;
-  return docs;
+  return docs.map((d) => ({ title: d.title, description: d.description, docId: d._id }));
 }
 
 export async function getTestimonials() {
@@ -146,7 +151,7 @@ export async function getTestimonials() {
   });
   const docs = data as TestimonialDoc[] | null;
   if (!docs || docs.length === 0) return defaultTestimonials;
-  return docs;
+  return docs.map((d) => ({ name: d.name, quote: d.quote, docId: d._id }));
 }
 
 export type SiteSettings = Awaited<ReturnType<typeof getSiteSettings>>;

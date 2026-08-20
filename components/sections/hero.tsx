@@ -6,6 +6,7 @@ import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 import { RealPhoto } from "@/components/ui/real-photo";
 import { WhatsAppIcon } from "@/components/ui/whatsapp-icon";
+import { EditableText } from "@/components/admin/editable-text";
 import { buildWhatsAppLink, defaultWhatsAppMessage } from "@/lib/business";
 import type { SiteSettings } from "@/lib/sanity-data";
 import { transitionEditorial, transitionStandard } from "@/lib/motion";
@@ -81,7 +82,7 @@ export function Hero({ settings }: { settings: SiteSettings }) {
               variants={{ visible: { transition: { delayChildren: 0.15 } } }}
             >
               <motion.span className="block" variants={line} transition={{ ...transitionStandard, delay: 0.15 }}>
-                {settings.heroHeadlineLine1}
+                <EditableText docId={settings.docId} field="heroHeadlineLine1" value={settings.heroHeadlineLine1} />
               </motion.span>
             </motion.span>
             <motion.span className="block overflow-hidden">
@@ -92,7 +93,7 @@ export function Hero({ settings }: { settings: SiteSettings }) {
                 animate="visible"
                 transition={{ ...transitionStandard, delay: 0.28 }}
               >
-                {settings.heroHeadlineLine2}
+                <EditableText docId={settings.docId} field="heroHeadlineLine2" value={settings.heroHeadlineLine2} />
               </motion.span>
             </motion.span>
           </h1>
@@ -103,7 +104,7 @@ export function Hero({ settings }: { settings: SiteSettings }) {
             transition={{ ...transitionStandard, delay: 0.4 }}
             className="mt-6 max-w-md text-[1.05rem] leading-relaxed text-ink-soft"
           >
-            {settings.heroSubtitle}
+            <EditableText docId={settings.docId} field="heroSubtitle" value={settings.heroSubtitle} multiline />
           </motion.p>
 
           <motion.div

@@ -4,6 +4,7 @@ import { motion } from "motion/react";
 import { HandHeart, Leaf, ShieldCheck } from "lucide-react";
 import { gridStagger, fadeUp } from "@/lib/motion";
 import { differentials as defaultDifferentials } from "@/lib/business";
+import { EditableText } from "@/components/admin/editable-text";
 
 const icons = [ShieldCheck, Leaf, HandHeart];
 
@@ -33,9 +34,11 @@ export function DifferentialsGrid({
             <div className="flex h-12 w-12 items-center justify-center rounded-full bg-cream/8 text-terracotta transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:-translate-y-0.5">
               <Icon className="h-5 w-5" strokeWidth={1.5} />
             </div>
-            <h3 className="mt-6 font-display text-xl text-cream">{item.title}</h3>
+            <h3 className="mt-6 font-display text-xl text-cream">
+              <EditableText docId={item.docId} field="title" value={item.title} />
+            </h3>
             <p className="mt-3 text-[0.94rem] leading-relaxed text-cream/60">
-              {item.description}
+              <EditableText docId={item.docId} field="description" value={item.description} multiline />
             </p>
           </motion.div>
         );

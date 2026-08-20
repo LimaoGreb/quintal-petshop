@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { RealPhoto } from "@/components/ui/real-photo";
 import { WhatsAppIcon } from "@/components/ui/whatsapp-icon";
 import { Reveal } from "@/components/ui/reveal";
+import { EditableText } from "@/components/admin/editable-text";
 import { buildWhatsAppLink, defaultWhatsAppMessage } from "@/lib/business";
 import type { SiteSettings } from "@/lib/sanity-data";
 
@@ -23,12 +24,12 @@ export function CtaEmotional({ settings }: { settings: SiteSettings }) {
           <div className="relative flex min-h-[380px] flex-col items-center justify-center px-6 py-20 text-center md:min-h-[440px]">
             <Reveal>
               <h2 className="max-w-2xl font-display text-[clamp(2.1rem,5vw,3.25rem)] leading-[1.15] text-cream">
-                {settings.ctaHeading}
+                <EditableText docId={settings.docId} field="ctaHeading" value={settings.ctaHeading} />
               </h2>
             </Reveal>
             <Reveal delay={0.08}>
               <p className="mt-5 max-w-lg text-[1.02rem] leading-relaxed text-cream/75">
-                {settings.ctaSubtitle}
+                <EditableText docId={settings.docId} field="ctaSubtitle" value={settings.ctaSubtitle} multiline />
               </p>
             </Reveal>
             <Reveal delay={0.16}>

@@ -69,6 +69,8 @@ export interface Service {
   price: string;
   description: string;
   featured: boolean;
+  /** _id real do documento no Sanity — só existe quando vem do CMS, usado pra edição no site. */
+  docId?: string;
 }
 
 export const services: Service[] = [
@@ -125,6 +127,7 @@ export const services: Service[] = [
 export interface Differential {
   title: string;
   description: string;
+  docId?: string;
 }
 
 export const differentials: Differential[] = [
@@ -148,6 +151,7 @@ export const differentials: Differential[] = [
 export interface Testimonial {
   name: string;
   quote: string;
+  docId?: string;
 }
 
 export const testimonials: Testimonial[] = [

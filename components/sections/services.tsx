@@ -7,6 +7,7 @@ import { SectionLabel } from "@/components/ui/section-label";
 import { RealPhoto } from "@/components/ui/real-photo";
 import { PhotoPlaceholder } from "@/components/ui/photo-placeholder";
 import { Reveal } from "@/components/ui/reveal";
+import { EditableText } from "@/components/admin/editable-text";
 import { gridStagger, fadeUp, transitionStandard } from "@/lib/motion";
 import { services as defaultServices } from "@/lib/business";
 import { motion } from "motion/react";
@@ -115,12 +116,14 @@ export function Services({ services = defaultServices }: { services?: typeof def
                     <div className="absolute inset-0 bg-gradient-to-t from-ink/75 via-ink/10 to-transparent" />
                     <div className="relative">
                       <Icon className="h-6 w-6 text-cream/80" strokeWidth={1.5} />
-                      <h3 className="mt-3 font-display text-2xl text-cream">{service.name}</h3>
+                      <h3 className="mt-3 font-display text-2xl text-cream">
+                        <EditableText docId={service.docId} field="name" value={service.name} />
+                      </h3>
                       <p className="mt-2 max-w-sm text-[0.92rem] leading-relaxed text-cream/75">
-                        {service.description}
+                        <EditableText docId={service.docId} field="description" value={service.description} multiline />
                       </p>
                       <p className="mt-4 text-[0.95rem] font-semibold text-cream">
-                        {service.price}
+                        <EditableText docId={service.docId} field="price" value={service.price} />
                       </p>
                     </div>
                   </>
@@ -130,13 +133,15 @@ export function Services({ services = defaultServices }: { services?: typeof def
                       <Icon className="h-5 w-5" strokeWidth={1.5} />
                     </div>
                     <div className="mt-5">
-                      <h3 className="font-display text-xl text-ink">{service.name}</h3>
+                      <h3 className="font-display text-xl text-ink">
+                        <EditableText docId={service.docId} field="name" value={service.name} />
+                      </h3>
                       <p className="mt-2 text-[0.9rem] leading-relaxed text-ink-soft">
-                        {service.description}
+                        <EditableText docId={service.docId} field="description" value={service.description} multiline />
                       </p>
                     </div>
                     <p className="mt-5 text-[0.92rem] font-semibold text-forest">
-                      {service.price}
+                      <EditableText docId={service.docId} field="price" value={service.price} />
                     </p>
                   </>
                 )}
