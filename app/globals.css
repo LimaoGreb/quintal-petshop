@@ -1,0 +1,126 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   QUINTAL PET SHOP — DESIGN TOKENS
+   Paleta pequena, com propósito. Base: creme, verde floresta, terracota.
+   ========================================================================== */
+
+:root {
+  /* Superfícies */
+  --color-cream: #fffcf5;        /* background principal */
+  --color-cream-medium: #fbf5e8; /* seções alternadas */
+  --color-sand: #f3e9d4;         /* faixas / divisores suaves */
+  --color-card: #ffffff;         /* cards */
+
+  /* Texto */
+  --color-ink: #1b1f22;          /* texto principal, quase preto */
+  --color-ink-soft: #4a4842;     /* texto secundário, cinza quente */
+  --color-ink-faint: #8a8578;    /* legendas, metadados */
+
+  /* Marca */
+  --color-forest: #2c633e;       /* primary — verde floresta */
+  --color-forest-deep: #1e4a2d;  /* verde profundo — hover, seção escura */
+  --color-forest-light: #e3ecdf; /* verde claro — fundos suaves, badges */
+  --color-terracotta: #e34a1c;   /* accent — terracota/laranja */
+  --color-terracotta-soft: #f7ded1; /* terracota suave — fundos, hover states */
+
+  /* Escala neutra da seção escura */
+  --color-night: #14201a;        /* fundo da seção "Diferenciais" */
+  --color-night-card: #1c2c23;
+
+  /* Motion easing */
+  --ease-editorial: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Radius */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.875rem;
+  --radius-lg: 1.5rem;
+  --radius-xl: 2.5rem;
+}
+
+@theme inline {
+  --color-cream: var(--color-cream);
+  --color-cream-medium: var(--color-cream-medium);
+  --color-sand: var(--color-sand);
+  --color-card: var(--color-card);
+  --color-ink: var(--color-ink);
+  --color-ink-soft: var(--color-ink-soft);
+  --color-ink-faint: var(--color-ink-faint);
+  --color-forest: var(--color-forest);
+  --color-forest-deep: var(--color-forest-deep);
+  --color-forest-light: var(--color-forest-light);
+  --color-terracotta: var(--color-terracotta);
+  --color-terracotta-soft: var(--color-terracotta-soft);
+  --color-night: var(--color-night);
+  --color-night-card: var(--color-night-card);
+
+  --font-display: var(--font-playfair);
+  --font-body: var(--font-space-grotesk);
+
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
+
+  --animate-fade-in: fade-in 0.5s var(--ease-editorial);
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--color-cream);
+  color: var(--color-ink);
+  font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  font-feature-settings: "ss01" 1;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--color-terracotta);
+  color: var(--color-cream);
+}
+
+/* Foco visível consistente em toda a aplicação */
+:focus-visible {
+  outline: 2px solid var(--color-terracotta);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Trava de scroll quando o menu mobile está aberto */
+.no-scroll {
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Textura de papel muito sutil para superfícies grandes de creme/areia */
+.texture-paper {
+  background-image: radial-gradient(circle at 1px 1px, rgba(27, 31, 34, 0.045) 1px, transparent 0);
+  background-size: 22px 22px;
+}
