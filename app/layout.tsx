@@ -4,6 +4,7 @@ import { Providers } from "@/components/providers";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { WhatsAppFloat } from "@/components/layout/whatsapp-float";
+import { BackToTop } from "@/components/layout/back-to-top";
 import { business } from "@/lib/business";
 import "./globals.css";
 
@@ -109,6 +110,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <main id="main-content">{children}</main>
           <Footer />
           <WhatsAppFloat />
+          <BackToTop />
         </Providers>
       </body>
     </html>
