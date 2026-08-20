@@ -8,6 +8,8 @@ import { BackToTop } from "@/components/layout/back-to-top";
 import { business } from "@/lib/business";
 import { getSiteSettings } from "@/lib/sanity-data";
 import { SanityLive } from "@/sanity/lib/live";
+import { VisualEditing } from "next-sanity/visual-editing";
+import { draftMode } from "next/headers";
 import "../globals.css";
 
 const playfair = Playfair_Display({
@@ -74,6 +76,7 @@ const weekdayName: Record<number, string> = {
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const settings = await getSiteSettings();
+  const { isEnabled: isDraftMode } = await draftMode();
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -127,6 +130,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <BackToTop />
         </Providers>
         <SanityLive />
+        {isDraftMode && <VisualEditing />}
       </body>
     </html>
   );

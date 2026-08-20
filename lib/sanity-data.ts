@@ -133,7 +133,7 @@ export async function getServices() {
 
 export async function getDifferentials() {
   const { data } = await sanityFetch({
-    query: `*[_type == "differential"] | order(order asc){ title, description }`,
+    query: `*[_type == "differential"] | order(order asc){ _id, title, description }`,
   });
   const docs = data as DifferentialDoc[] | null;
   if (!docs || docs.length === 0) return defaultDifferentials;
@@ -142,7 +142,7 @@ export async function getDifferentials() {
 
 export async function getTestimonials() {
   const { data } = await sanityFetch({
-    query: `*[_type == "testimonial"] | order(order asc){ name, quote }`,
+    query: `*[_type == "testimonial"] | order(order asc){ _id, name, quote }`,
   });
   const docs = data as TestimonialDoc[] | null;
   if (!docs || docs.length === 0) return defaultTestimonials;

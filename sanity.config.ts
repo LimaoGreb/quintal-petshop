@@ -7,6 +7,7 @@
 import {visionTool} from '@sanity/vision'
 import {defineConfig} from 'sanity'
 import {structureTool} from 'sanity/structure'
+import {presentationTool} from 'sanity/presentation'
 
 // Go to https://www.sanity.io/docs/api-versioning to learn how API versioning works
 import {apiVersion, dataset, projectId} from './sanity/env'
@@ -21,6 +22,16 @@ export default defineConfig({
   schema,
   plugins: [
     structureTool({structure}),
+    // "Editar no site" — mostra a página real com contornos clicáveis nos
+    // campos, direto ligado ao conteúdo do Sanity.
+    presentationTool({
+      previewUrl: {
+        origin: typeof window !== 'undefined' ? window.location.origin : '',
+        previewMode: {
+          enable: '/api/draft-mode/enable',
+        },
+      },
+    }),
     // Vision is for querying with GROQ from inside the Studio
     // https://www.sanity.io/docs/the-vision-plugin
     visionTool({defaultApiVersion: apiVersion}),
